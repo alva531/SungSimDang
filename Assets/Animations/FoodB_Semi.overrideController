@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FoodB_Semi
+  m_Controller: {fileID: 9100000, guid: 7808f5139a9336b4d95a631cd7d702e2, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 5e1a3a5b57584ab4d9bf1181fa1a9410, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 68b85df3efd81ad44a8f443b9935ba31, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 7bd6acb62ee4eb64b8db654ff26f500b, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6f414ff9f0ad0c24ca8f146b0dd3f437, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: ba0ca4ef14eac5041be4c8669763c0b7, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f029b4ac74cfbdd45a0d47867f281f9d, type: 2}

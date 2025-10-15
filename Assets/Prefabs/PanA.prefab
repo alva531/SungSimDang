@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 560594798017774942}
   - component: {fileID: 5601685677132275926}
   - component: {fileID: 4297534336265553410}
+  - component: {fileID: 6971435725339015117}
   m_Layer: 5
   m_Name: PanA
   m_TagString: Untagged
@@ -37,8 +38,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 0, y: -8.960022}
+  m_SizeDelta: {x: 84.6, y: 77}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8056752379464028755
 CanvasRenderer:
@@ -68,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2629015755099335160, guid: da264d0ccb134904aa61d1e874c7c568, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7ce45c70f87a0424ea31a639f24642ae, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -104,19 +105,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodName: A
-  rawSprite: {fileID: 2629015755099335160, guid: da264d0ccb134904aa61d1e874c7c568, type: 3}
-  semiCookedSprite: {fileID: -8144116692588876362, guid: ddd3e9a4f3ebd764d81123b24b814547, type: 3}
-  cookedSprite: {fileID: -2197873783220540539, guid: 8705d6dc4e0620f48ba79ac809220ac7, type: 3}
-  burntSprite: {fileID: -5605956060832145308, guid: 2ce8e63c3a5db1c44b83f5e44301d989, type: 3}
+  rawSprite: {fileID: 21300000, guid: 7ce45c70f87a0424ea31a639f24642ae, type: 3}
+  semiCookedSprite: {fileID: 21300000, guid: 7b6ef444a5e669e49824329711c7486b, type: 3}
+  cookedSprite: {fileID: 21300000, guid: 05cdd576376ad64438838d6225148320, type: 3}
+  burntSprite: {fileID: 21300000, guid: 7beea7978a52f1e468fcadce26122aca, type: 3}
   stateSprites:
   - state: 0
-    sprite: {fileID: 2629015755099335160, guid: da264d0ccb134904aa61d1e874c7c568, type: 3}
+    sprite: {fileID: 21300000, guid: 7ce45c70f87a0424ea31a639f24642ae, type: 3}
   - state: 1
-    sprite: {fileID: -8144116692588876362, guid: ddd3e9a4f3ebd764d81123b24b814547, type: 3}
+    sprite: {fileID: 21300000, guid: 7b6ef444a5e669e49824329711c7486b, type: 3}
   - state: 2
-    sprite: {fileID: -2197873783220540539, guid: 8705d6dc4e0620f48ba79ac809220ac7, type: 3}
+    sprite: {fileID: 21300000, guid: 05cdd576376ad64438838d6225148320, type: 3}
   - state: 3
-    sprite: {fileID: -5605956060832145308, guid: 2ce8e63c3a5db1c44b83f5e44301d989, type: 3}
+    sprite: {fileID: 21300000, guid: 7beea7978a52f1e468fcadce26122aca, type: 3}
+  stateAnim:
+  - state: 0
+    anim: {fileID: 22100000, guid: 314ac28daa065244486b7335d3edd518, type: 2}
+  - state: 1
+    anim: {fileID: 22100000, guid: fea9a839e8d98b74faeb9e434feef93c, type: 2}
+  - state: 2
+    anim: {fileID: 22100000, guid: 04a817eb4981a034e83bb25e461563c0, type: 2}
+  - state: 3
+    anim: {fileID: 22100000, guid: a59fbafbf3916424692438366bd28a4f, type: 2}
   currentBox: {fileID: 0}
   currentState: 0
 --- !u!225 &4297534336265553410
@@ -131,3 +141,25 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!95 &6971435725339015117
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3750726733545085875}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: a59fbafbf3916424692438366bd28a4f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

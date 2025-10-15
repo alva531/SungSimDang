@@ -7,6 +7,14 @@ public class OrderBox : MonoBehaviour
     public List<FoodItem> collectedItems = new List<FoodItem>();
     public int maxItems = 3;
 
+    void Update()
+    {
+        if (collectedItems.Count >= 3)
+        {
+            GetComponent<DropZone>().enabled = false;
+        }
+    }
+
     /// <summary>
     /// Añade un FoodItem a la caja.
     /// </summary>
@@ -15,6 +23,13 @@ public class OrderBox : MonoBehaviour
     {
         if (food == null) return;
 
+        // Si la caja está llena, no aceptar más
+        if (collectedItems.Count >= maxItems)
+        {
+            Debug.Log($"🚫 Caja llena: no se puede agregar {food.foodName}");
+            return;
+        }
+
         // Si estaba en otra caja, lo quitamos
         OrderBox oldBox = food.currentBox;
         if (oldBox != null && oldBox != this)
@@ -22,17 +37,14 @@ public class OrderBox : MonoBehaviour
             oldBox.RemoveItem(food);
         }
 
-        // Si estamos llenos, remover el primero
-        if (collectedItems.Count >= maxItems)
-        {
-            FoodItem toRemove = collectedItems[0];
-            RemoveItem(toRemove);
-        }
-
         // Añadir
         collectedItems.Add(food);
         food.transform.SetParent(transform, false);
         food.currentBox = this;
+
+        var anim = food.GetComponent<Animator>();
+        if (anim != null)
+            anim.SetTrigger("Bag");
 
         Debug.Log($"📥 Caja: agregado {food.foodName} (Estado: {food.currentState})");
     }
@@ -48,7 +60,13 @@ public class OrderBox : MonoBehaviour
         {
             collectedItems.Remove(food);
             food.currentBox = null;
+            food.GetComponent<Animator>().SetTrigger("Base");
             Debug.Log($"📤 Caja: removido {food.foodName} (Estado: {food.currentState})");
+
+            if (GetComponent<DropZone>().enabled == false)
+            {
+                GetComponent<DropZone>().enabled = true;
+            }
         }
     }
 

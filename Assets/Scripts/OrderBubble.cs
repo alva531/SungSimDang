@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,6 @@ public class OrderBubble : MonoBehaviour
 
     private List<GameObject> spawned = new List<GameObject>();
 
-    // Mostrar orden con sprites según estado
     public void ShowOrderWithStates(List<(GameObject prefab, FoodState state)> foodRequests)
     {
         Clear();
@@ -24,14 +24,12 @@ public class OrderBubble : MonoBehaviour
             {
                 Sprite s = null;
 
-                // Intentar obtener desde el componente FoodItem (incluye lazy build)
+                // Obtener sprite desde el FoodItem del prefab
                 var fi = req.prefab.GetComponent<FoodItem>();
                 if (fi != null)
-                {
                     s = fi.GetSpriteForState(req.state);
-                }
 
-                // Fallback al sprite de la Image del prefab (si existe)
+                // Fallback al sprite de la imagen del prefab
                 if (s == null)
                 {
                     var prefabImg = req.prefab.GetComponent<Image>();
@@ -41,10 +39,17 @@ public class OrderBubble : MonoBehaviour
                 if (s != null) img.sprite = s;
             }
 
+            // 🔧 Desactivar cualquier Draggable o Animator del ícono (no del prefab)
+            var drag = icon.GetComponent<DraggableItem>();
+            if (drag != null) drag.enabled = false;
+
+            var anim = icon.GetComponent<Animator>();
+            if (anim != null) anim.enabled = false;
+
             spawned.Add(icon);
         }
     }
-
+    
     public void Clear()
     {
         for (int i = spawned.Count - 1; i >= 0; i--) Destroy(spawned[i]);

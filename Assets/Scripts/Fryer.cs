@@ -23,6 +23,8 @@ public class Fryer : MonoBehaviour
 
         currentFood = item;
 
+        item.GetComponent<Animator>().SetTrigger("Horno");
+
         // avisar al draggable que está en esta freidora
         var draggable = currentFood.GetComponent<DraggableItem>();
         if (draggable != null)
@@ -45,32 +47,26 @@ public class Fryer : MonoBehaviour
         switch (startState)
         {
             case FoodState.Raw:
-                // Raw -> SemiCooked
                 yield return WaitAndCheck(semiCookTime);
                 if (currentFood != null)
                     currentFood.SemiCook();
                 goto case FoodState.SemiCooked;
 
             case FoodState.SemiCooked:
-                // SemiCooked -> Cooked
                 yield return WaitAndCheck(cookTime - semiCookTime);
                 if (currentFood != null)
                     currentFood.Cook();
                 goto case FoodState.Cooked;
 
             case FoodState.Cooked:
-                // Cooked -> Burnt
                 yield return WaitAndCheck(burnDelay);
                 if (currentFood != null)
                     currentFood.Burn();
                 break;
 
             case FoodState.Burnt:
-                // Ya está quemado, no hay nada más que hacer
                 break;
         }
-
-        ReleaseFood();
     }
 
     private IEnumerator WaitAndCheck(float time)
@@ -81,28 +77,6 @@ public class Fryer : MonoBehaviour
             t += Time.deltaTime;
             yield return null;
         }
-    }
-
-    public void ReleaseFood()
-    {
-        if (currentFood == null) return;
-
-        currentFood.transform.SetParent(slot.parent, true); 
-        currentFood.SetDraggable(true);
-
-        var draggable = currentFood.GetComponent<DraggableItem>();
-        if (draggable != null)
-            draggable.SetFryer(null);
-
-        currentFood = null;
-
-        if (cookRoutine != null)
-        {
-            StopCoroutine(cookRoutine);
-            cookRoutine = null;
-        }
-
-        cooking = false;
     }
 
     public void InterruptCooking()
@@ -118,6 +92,7 @@ public class Fryer : MonoBehaviour
         }
 
         cooking = false;
+        currentFood.GetComponent<Animator>().SetTrigger("Base");
 
         currentFood.SetDraggable(true);
         var draggable = currentFood.GetComponent<DraggableItem>();

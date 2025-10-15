@@ -17,40 +17,55 @@ public struct StateSprite
     public Sprite sprite;
 }
 
+[System.Serializable]
+public struct StateAnimOverride
+{
+    public FoodState state;
+    public AnimatorOverrideController anim;
+}
+
+[RequireComponent(typeof(Image))]
+[RequireComponent(typeof(Animator))]
 public class FoodItem : MonoBehaviour
 {
     [Header("Info")]
     public string foodName;
 
-    [Header("Legacy sprites (opcional)")]
+    [Header("Sprites")]
     public Sprite rawSprite;
     public Sprite semiCookedSprite;
     public Sprite cookedSprite;
     public Sprite burntSprite;
 
-    [Header("Sprites por estado (preferible)")]
+    [Header("Sprites por estado")]
     public List<StateSprite> stateSprites = new List<StateSprite>();
+
+    [Header("Animators por estado")]
+    public List<StateAnimOverride> stateAnim = new List<StateAnimOverride>();
 
     [HideInInspector] public OrderBox currentBox;
     [HideInInspector] public FoodState currentState = FoodState.Raw;
 
     private Image image;
+    private Animator animator;
+
     private Dictionary<FoodState, Sprite> spriteLookup;
+    private Dictionary<FoodState, AnimatorOverrideController> animLookup;
 
     private void Awake()
     {
         image = GetComponent<Image>();
-        BuildLookup();
+        animator = GetComponent<Animator>();
+        BuildLookups();
         UpdateVisual();
     }
 
-    // Construye / rellena el diccionario desde stateSprites o desde los campos legacy
-    private void BuildLookup()
+    private void BuildLookups()
     {
+        // Sprites
         if (spriteLookup == null) spriteLookup = new Dictionary<FoodState, Sprite>();
         spriteLookup.Clear();
 
-        // Primero desde la lista serializable (si está)
         if (stateSprites != null)
         {
             foreach (var entry in stateSprites)
@@ -60,7 +75,7 @@ public class FoodItem : MonoBehaviour
             }
         }
 
-        // Fallback a los campos legacy si faltan entradas
+        // Fallback a los campos legacy
         if (!spriteLookup.ContainsKey(FoodState.Raw) && rawSprite != null)
             spriteLookup[FoodState.Raw] = rawSprite;
         if (!spriteLookup.ContainsKey(FoodState.SemiCooked) && semiCookedSprite != null)
@@ -69,23 +84,47 @@ public class FoodItem : MonoBehaviour
             spriteLookup[FoodState.Cooked] = cookedSprite;
         if (!spriteLookup.ContainsKey(FoodState.Burnt) && burntSprite != null)
             spriteLookup[FoodState.Burnt] = burntSprite;
+
+        // Animadores
+        if (animLookup == null) animLookup = new Dictionary<FoodState, AnimatorOverrideController>();
+        animLookup.Clear();
+
+        if (stateAnim != null)
+        {
+            foreach (var entry in stateAnim)
+            {
+                if (entry.anim != null && !animLookup.ContainsKey(entry.state))
+                    animLookup.Add(entry.state, entry.anim);
+            }
+        }
     }
 
-    // Método público seguro: construye el lookup si hace falta (útil cuando llamas desde un prefab)
     public Sprite GetSpriteForState(FoodState state)
     {
         if (spriteLookup == null || spriteLookup.Count == 0)
-            BuildLookup();
+            BuildLookups();
 
         spriteLookup.TryGetValue(state, out Sprite s);
         return s;
     }
 
+    public AnimatorOverrideController GetAnimatorForState(FoodState state)
+    {
+        if (animLookup == null || animLookup.Count == 0)
+            BuildLookups();
+
+        animLookup.TryGetValue(state, out AnimatorOverrideController a);
+        return a;
+    }
+
     private void UpdateVisual()
     {
         if (image == null) return;
-        var s = GetSpriteForState(currentState);
-        if (s != null) image.sprite = s;
+        var a = GetAnimatorForState(currentState);
+        if (a != null && animator != null)
+        {
+            animator.runtimeAnimatorController = a;
+        }
     }
 
     public void SemiCook()
