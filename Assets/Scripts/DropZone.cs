@@ -21,6 +21,7 @@ public class DropZone : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         GameObject draggedGO = eventData.pointerDrag;
+        Debug.Log("DROP");
         if (draggedGO == null) return;
 
         FoodItem food = draggedGO.GetComponent<FoodItem>();

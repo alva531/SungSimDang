@@ -1,48 +1,92 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
-public class FoodGenerator : MonoBehaviour, IPointerDownHandler
+public class FoodGenerator : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [Header("Generator settings")]
-    public GameObject foodPrefab;      // Prefab UI (Image) que contiene FoodItem + DraggableItem
-    public RectTransform spawnParent;  // Panel/Canvas donde instanciar
+    public GameObject foodPrefab;
+    public RectTransform spawnParent;
+    public Vector2 foodSize = new Vector2(100, 100);
 
-    [Header("Food Size")]
-    public Vector2 foodSize = new Vector2(100, 100); // ancho x alto en píxeles
+    private GameObject currentSpawned;
+    private bool isDragging;
+    private PointerEventData cachedEventData;
+    private DraggableItem currentDraggable;
 
     public void OnPointerDown(PointerEventData eventData)
     {
         if (foodPrefab == null || spawnParent == null) return;
 
-        // Instanciar
-        GameObject go = Instantiate(foodPrefab, spawnParent);
-        RectTransform rt = go.GetComponent<RectTransform>();
-
-        // Ajustar tamaño
+        currentSpawned = Instantiate(foodPrefab, spawnParent);
+        RectTransform rt = currentSpawned.GetComponent<RectTransform>();
         rt.sizeDelta = foodSize;
 
-        // Posicionar sobre el generador (asumiendo que este objeto es UI y en el mismo Canvas)
         RectTransform myRect = transform as RectTransform;
-        if (myRect != null)
-        {
-            // convertir posición local del generador en espacio del spawnParent
-            Vector3 worldPos = myRect.TransformPoint(myRect.rect.center);
-            rt.position = worldPos;
-        }
-        else
-        {
-            rt.position = transform.position;
-        }
-
-        // resetear escala
+        rt.position = myRect != null ? myRect.TransformPoint(myRect.rect.center) : transform.position;
         rt.localScale = Vector3.one;
 
-        // opcional: inicializar nombre
-        var fi = go.GetComponent<FoodItem>();
+        var fi = currentSpawned.GetComponent<FoodItem>();
         if (fi != null && string.IsNullOrEmpty(fi.foodName))
+            fi.foodName = currentSpawned.name.Replace("(Clone)", "").Trim();
+
+        currentDraggable = currentSpawned.GetComponent<DraggableItem>();
+
+        // 🔹 Asignar pointerDrag para DropZones
+        cachedEventData = new PointerEventData(EventSystem.current)
         {
-            fi.foodName = go.name.Replace("(Clone)", "").Trim();
+            position = eventData.position,
+            pointerPress = currentSpawned,
+            pointerDrag = currentSpawned
+        };
+
+        isDragging = true;
+        currentDraggable.OnBeginDrag(cachedEventData);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (isDragging && currentDraggable != null)
+        {
+            currentDraggable.OnEndDrag(eventData);
+
+            // 🔹 disparar OnDrop manualmente
+            if (cachedEventData.pointerEnter != null)
+            {
+                ExecuteEvents.Execute(
+                    cachedEventData.pointerEnter,
+                    cachedEventData,
+                    ExecuteEvents.dropHandler
+                );
+            }
         }
+
+        currentSpawned = null;
+        currentDraggable = null;
+        isDragging = false;
+    }
+
+    private void Update()
+    {
+        if (!isDragging || currentDraggable == null) return;
+
+        Vector2 currentPointerPos;
+
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+            currentPointerPos = Touchscreen.current.primaryTouch.position.ReadValue();
+        else if (Mouse.current != null)
+            currentPointerPos = Mouse.current.position.ReadValue();
+        else
+            return;
+
+        cachedEventData.position = currentPointerPos;
+
+        currentDraggable.OnDrag(cachedEventData);
+
+        // 🔹 Actualizar pointerEnter para que DropZones detecten desde el primer frame
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(cachedEventData, results);
+        cachedEventData.pointerEnter = results.Count > 0 ? results[0].gameObject : null;
     }
 }
