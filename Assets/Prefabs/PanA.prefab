@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -8.960022}
-  m_SizeDelta: {x: 84.6, y: 77}
+  m_SizeDelta: {x: 84, y: 81.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8056752379464028755
 CanvasRenderer:
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7ce45c70f87a0424ea31a639f24642ae, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e35982753e586954c9382d25473139ae, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -105,19 +105,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   foodName: A
-  rawSprite: {fileID: 21300000, guid: 7ce45c70f87a0424ea31a639f24642ae, type: 3}
-  semiCookedSprite: {fileID: 21300000, guid: 7b6ef444a5e669e49824329711c7486b, type: 3}
-  cookedSprite: {fileID: 21300000, guid: 05cdd576376ad64438838d6225148320, type: 3}
-  burntSprite: {fileID: 21300000, guid: 7beea7978a52f1e468fcadce26122aca, type: 3}
+  rawSprite: {fileID: 21300000, guid: e35982753e586954c9382d25473139ae, type: 3}
+  semiCookedSprite: {fileID: 21300000, guid: 3765f4d07ce5dcc4e899ff3d69f004ba, type: 3}
+  cookedSprite: {fileID: 21300000, guid: e69ec51171c4c024da21c1731010f90b, type: 3}
+  burntSprite: {fileID: 21300000, guid: 90d2a62131a0504409d02db7117252cd, type: 3}
   stateSprites:
   - state: 0
-    sprite: {fileID: 21300000, guid: 7ce45c70f87a0424ea31a639f24642ae, type: 3}
+    sprite: {fileID: 21300000, guid: e35982753e586954c9382d25473139ae, type: 3}
   - state: 1
-    sprite: {fileID: 21300000, guid: 7b6ef444a5e669e49824329711c7486b, type: 3}
+    sprite: {fileID: 21300000, guid: 3765f4d07ce5dcc4e899ff3d69f004ba, type: 3}
   - state: 2
-    sprite: {fileID: 21300000, guid: 05cdd576376ad64438838d6225148320, type: 3}
+    sprite: {fileID: 21300000, guid: e69ec51171c4c024da21c1731010f90b, type: 3}
   - state: 3
-    sprite: {fileID: 21300000, guid: 7beea7978a52f1e468fcadce26122aca, type: 3}
+    sprite: {fileID: 21300000, guid: 90d2a62131a0504409d02db7117252cd, type: 3}
   stateAnim:
   - state: 0
     anim: {fileID: 22100000, guid: 314ac28daa065244486b7335d3edd518, type: 2}

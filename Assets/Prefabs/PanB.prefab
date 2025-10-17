@@ -23,7 +23,7 @@ PrefabInstance:
     - target: {fileID: 5065256269807441318, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3d21b40bccfb2c54283006a97e9bb1e5, type: 3}
+      objectReference: {fileID: 21300000, guid: 1952d968ad4e43d44b1cd6232833e804, type: 3}
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: image
       value: 
@@ -35,15 +35,15 @@ PrefabInstance:
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: rawSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3d21b40bccfb2c54283006a97e9bb1e5, type: 3}
+      objectReference: {fileID: 21300000, guid: 1952d968ad4e43d44b1cd6232833e804, type: 3}
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: burntSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6c280cf846e499945a49289dc2371b15, type: 3}
+      objectReference: {fileID: 21300000, guid: a3b5abbc76925e84a9c398aa488b78a2, type: 3}
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: cookedSprite
       value: 
-      objectReference: {fileID: 21300000, guid: 7539aef94e1793f418f287fffe847944, type: 3}
+      objectReference: {fileID: 21300000, guid: 80ff7e1f047da284daeea5818cbbc066, type: 3}
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: semiCookedSprite
       value: 
@@ -67,19 +67,19 @@ PrefabInstance:
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: stateSprites.Array.data[0].sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 3d21b40bccfb2c54283006a97e9bb1e5, type: 3}
+      objectReference: {fileID: 21300000, guid: 1952d968ad4e43d44b1cd6232833e804, type: 3}
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: stateSprites.Array.data[1].sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 4ef2278ed6bf0464eaba57c98c3e99c4, type: 3}
+      objectReference: {fileID: 21300000, guid: 80ff7e1f047da284daeea5818cbbc066, type: 3}
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: stateSprites.Array.data[2].sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 7539aef94e1793f418f287fffe847944, type: 3}
+      objectReference: {fileID: 21300000, guid: 0476f6d0cdbeabe4daf7649e76ec7e4a, type: 3}
     - target: {fileID: 5601685677132275926, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: stateSprites.Array.data[3].sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 6c280cf846e499945a49289dc2371b15, type: 3}
+      objectReference: {fileID: 21300000, guid: a3b5abbc76925e84a9c398aa488b78a2, type: 3}
     - target: {fileID: 6285487690654458950, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -106,11 +106,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6285487690654458950, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 84.6
+      value: 84
       objectReference: {fileID: 0}
     - target: {fileID: 6285487690654458950, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 77
+      value: 81.5
       objectReference: {fileID: 0}
     - target: {fileID: 6285487690654458950, guid: f31d20c7fbc8c644299095658871f322, type: 3}
       propertyPath: m_LocalPosition.x
