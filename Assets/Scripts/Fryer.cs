@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class Fryer : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class Fryer : MonoBehaviour
 
     public bool IsFree => !cooking;
 
+    public GameObject Reloj;
+    public Vector2 relojPosition;
+
+    private GameObject _reloj;
+
     public void PlaceItem(FoodItem item)
     {
         if (cooking || item == null) return;
@@ -24,6 +30,9 @@ public class Fryer : MonoBehaviour
         currentFood = item;
 
         item.GetComponent<Animator>().SetTrigger("Horno");
+
+        GameObject _reloj = Instantiate(Reloj, transform.localPosition, transform.localRotation, gameObject.transform);
+        _reloj.transform.localPosition = relojPosition;
 
         // avisar al draggable que está en esta freidora
         var draggable = currentFood.GetComponent<DraggableItem>();
@@ -82,6 +91,9 @@ public class Fryer : MonoBehaviour
     public void InterruptCooking()
     {
         if (currentFood == null) return;
+
+        _reloj = GetComponentInChildren<Reloj>().gameObject;
+        Destroy(_reloj.gameObject);
 
         Debug.Log($"⏸ {currentFood.foodName} -> INTERRUPTED en estado {currentFood.currentState}");
 

@@ -1,21 +1,59 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-public class DropZone : MonoBehaviour, IDropHandler
+public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public enum ZoneType { Box, Customer, Fryer, Trash }
     public ZoneType zoneType;
 
-    // referencias que asignarás en el Inspector o por spawner
-    public OrderBox linkedBox;          // si ZoneType == Box
-    public CustomerOrder linkedCustomer;// si ZoneType == Customer
-    public Fryer linkedFryer;          // si ZoneType == Fryer
-
+    [Header("Referencias")]
+    public OrderBox linkedBox;
+    public CustomerOrder linkedCustomer;
+    public Fryer linkedFryer;
     public BoxSpawner boxSpawner;
+
+    [Header("Imagen de estado")]
+    [Tooltip("Imagen a modificar. Si está vacío, se usa la del propio objeto.")]
+    public Image targetImage;
+
+    [Header("Sprites de estado")]
+    public Sprite normalSprite;   // Frame 1 (por defecto)
+    public Sprite hoverSprite;    // Frame 2 (cuando algo válido pasa por encima)
+
+    private Image internalImage;  // respaldo si no se asigna manualmente
 
     void Start()
     {
+        internalImage = GetComponent<Image>();
+        if (targetImage == null) targetImage = internalImage;
+
+        if (targetImage != null && normalSprite != null)
+            targetImage.sprite = normalSprite;
+
         boxSpawner = GameObject.FindAnyObjectByType<BoxSpawner>();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (eventData.pointerDrag == null) return;
+
+        GameObject draggedGO = eventData.pointerDrag;
+
+        // ✅ Solo mostrar hover si el objeto arrastrado es válido para esta zona
+        bool isValid = IsValidForZone(draggedGO);
+        if (isValid && hoverSprite != null && targetImage != null)
+        {
+            targetImage.sprite = hoverSprite;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (targetImage != null && normalSprite != null)
+        {
+            targetImage.sprite = normalSprite;
+        }
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -24,8 +62,12 @@ public class DropZone : MonoBehaviour, IDropHandler
         Debug.Log("DROP");
         if (draggedGO == null) return;
 
+        // Volvemos al sprite normal al soltar
+        if (targetImage != null && normalSprite != null)
+            targetImage.sprite = normalSprite;
+
         FoodItem food = draggedGO.GetComponent<FoodItem>();
-        OrderBox box = draggedGO.GetComponent<OrderBox>();
+        OrderBox box = draggedGO.GetComponentInChildren<OrderBox>();
 
         switch (zoneType)
         {
@@ -39,7 +81,6 @@ public class DropZone : MonoBehaviour, IDropHandler
                 break;
 
             case ZoneType.Fryer:
-
                 Debug.Log("FREIR");
                 if (linkedFryer != null && food != null)
                 {
@@ -62,7 +103,7 @@ public class DropZone : MonoBehaviour, IDropHandler
                     if (ok)
                     {
                         Debug.Log("✅ Pedido correcto - cliente satisfecho");
-                        Destroy(box.gameObject);
+                        Destroy(box.GetComponentInParent<DraggableBox>().gameObject);
                         boxSpawner.OnBoxDelivered();
                         linkedCustomer.OnOrderCompleted();
                     }
@@ -72,6 +113,7 @@ public class DropZone : MonoBehaviour, IDropHandler
                     }
                 }
                 break;
+
             case ZoneType.Trash:
                 if (draggedGO.CompareTag("Caja"))
                 {
@@ -82,8 +124,31 @@ public class DropZone : MonoBehaviour, IDropHandler
                 {
                     Destroy(draggedGO);
                 }
-
                 break;
+        }
+    }
+
+    private bool IsValidForZone(GameObject draggedGO)
+    {
+        switch (zoneType)
+        {
+            case ZoneType.Box:
+                return draggedGO.GetComponent<FoodItem>() != null;
+
+            case ZoneType.Customer:
+                return draggedGO.GetComponentInChildren<OrderBox>() != null;
+
+            case ZoneType.Fryer:
+                // 👇 Solo si hay un food y la freidora está libre
+                return draggedGO.GetComponent<FoodItem>() != null &&
+                       linkedFryer != null &&
+                       linkedFryer.IsFree;
+
+            case ZoneType.Trash:
+                return draggedGO.CompareTag("Caja") || draggedGO.GetComponent<FoodItem>() != null;
+
+            default:
+                return false;
         }
     }
 }
