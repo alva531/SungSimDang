@@ -47,16 +47,16 @@ public class Fryer : MonoBehaviour
         switch (startState)
         {
             case FoodState.Raw:
-                yield return WaitAndCheck(semiCookTime);
-                if (currentFood != null)
-                    currentFood.SemiCook();
-                goto case FoodState.SemiCooked;
-
-            case FoodState.SemiCooked:
-                yield return WaitAndCheck(cookTime - semiCookTime);
+                yield return WaitAndCheck(cookTime);
                 if (currentFood != null)
                     currentFood.Cook();
                 goto case FoodState.Cooked;
+
+            //case FoodState.SemiCooked:
+                //yield return WaitAndCheck(cookTime - semiCookTime);
+                //if (currentFood != null)
+                   //currentFood.Cook();
+                //goto case FoodState.Cooked;
 
             case FoodState.Cooked:
                 yield return WaitAndCheck(burnDelay);

@@ -131,7 +131,7 @@ public class FoodItem : MonoBehaviour
     {
         if (currentState == FoodState.Raw)
         {
-            currentState = FoodState.SemiCooked;
+            currentState = FoodState.Cooked;
             Debug.Log($"🍳 {foodName} -> SemiCooked");
             UpdateVisual();
         }
@@ -139,7 +139,7 @@ public class FoodItem : MonoBehaviour
 
     public void Cook()
     {
-        if (currentState == FoodState.SemiCooked)
+        if (currentState == FoodState.Raw)
         {
             currentState = FoodState.Cooked;
             Debug.Log($"🔥 {foodName} -> Cooked");

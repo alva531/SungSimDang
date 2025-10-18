@@ -1578,8 +1578,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: {fileID: 211144378}
-  semiCookTime: 2
-  cookTime: 3
+  semiCookTime: 0
+  cookTime: 2
   burnDelay: 2
 --- !u!114 &1055598841
 MonoBehaviour:
@@ -2665,8 +2665,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot: {fileID: 547727608}
-  semiCookTime: 2
-  cookTime: 3
+  semiCookTime: 0
+  cookTime: 2
   burnDelay: 2
 --- !u!114 &1963284736
 MonoBehaviour:

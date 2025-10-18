@@ -80,7 +80,7 @@ public class CustomerSpawner : MonoBehaviour
     {
         float r = Random.value;
         // ejemplo: SemiCooked 40%, Cooked 60%
-        if (r < 0.25f) return FoodState.SemiCooked;
+        //if (r < 0.25f) return FoodState.SemiCooked;
         return FoodState.Cooked;
     }
 
