@@ -5,14 +5,11 @@ public class CustomerOrder : MonoBehaviour
 {
     [Header("UI")]
     public OrderBubble bubble;
+    public DropZone dropZone; // Referencia a su zona de entrega
 
     // Guardamos nombre + estado requerido
     private List<(string foodName, FoodState requiredState)> requestedItems = new List<(string, FoodState)>();
 
-    /// <summary>
-    /// Configura el pedido del cliente.
-    /// </summary>
-    /// <param name="foodRequests">Lista de tuplas: prefab + estado deseado</param>
     public void SetOrder(List<(GameObject prefab, FoodState state)> foodRequests)
     {
         requestedItems.Clear();
@@ -22,7 +19,6 @@ public class CustomerOrder : MonoBehaviour
         {
             if (req.prefab == null) continue;
 
-            // Tomamos el nombre definido en el prefab o en el FoodItem si existe
             string name;
             var foodItemComp = req.prefab.GetComponent<FoodItem>();
             if (foodItemComp != null && !string.IsNullOrEmpty(foodItemComp.foodName))
@@ -33,21 +29,35 @@ public class CustomerOrder : MonoBehaviour
             requestedItems.Add((name, req.state));
         }
 
-        // Mostrar en la burbuja UI
         bubble?.ShowOrderWithStates(foodRequests);
     }
 
-    /// <summary>
-    /// Valida si los items entregados cumplen el pedido exacto.
-    /// </summary>
-    /// <param name="deliveredItems">Lista de FoodItem entregados</param>
-    /// <returns>true si todo coincide</returns>
+    // 🟠 Nuevo método: Configura el aspecto de su DropZone según el spawnPoint
+    public void ConfigureAppearance(int spawnIndex, Sprite normalSprite, Sprite hoverSprite)
+    {
+        if (dropZone == null)
+            dropZone = GetComponentInChildren<DropZone>();
+
+        if (dropZone != null)
+        {
+            dropZone.normalSprite = normalSprite;
+            dropZone.hoverSprite = hoverSprite;
+
+            if (dropZone.targetImage != null)
+                dropZone.targetImage.sprite = normalSprite;
+        }
+
+        // (opcional) podés guardar el índice si lo necesitás para lógica futura
+        _spawnIndex = spawnIndex;
+    }
+
+    private int _spawnIndex; // Guarda en qué spawn apareció (si te sirve más adelante)
+
     public bool ValidateOrder(List<FoodItem> deliveredItems)
     {
         if (deliveredItems == null) return false;
         if (deliveredItems.Count != requestedItems.Count) return false;
 
-        // Hacemos copia para ir removiendo items correctos
         var pending = new List<(string foodName, FoodState requiredState)>(requestedItems);
 
         foreach (var delivered in deliveredItems)
@@ -60,24 +70,14 @@ public class CustomerOrder : MonoBehaviour
 
             FoodState dstate = delivered.currentState;
 
-            // Buscamos match exacto
             int idx = pending.FindIndex(p => p.foodName == dname && p.requiredState == dstate);
-            if (idx >= 0)
-            {
-                pending.RemoveAt(idx);
-            }
-            else
-            {
-                return false; // algo no coincide
-            }
+            if (idx >= 0) pending.RemoveAt(idx);
+            else return false;
         }
 
         return pending.Count == 0;
     }
 
-    /// <summary>
-    /// Llama cuando el pedido fue completado correctamente.
-    /// </summary>
     public void OnOrderCompleted()
     {
         bubble?.Clear();

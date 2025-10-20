@@ -1628,6 +1628,14 @@ MonoBehaviour:
   - {fileID: 244855754}
   initialDelay: 1
   spawnInterval: 4
+  normalSprites:
+  - {fileID: 21300000, guid: bb69fbcb007a1544d9cd23a2d00cbb17, type: 3}
+  - {fileID: 21300000, guid: 7bcdd2f6ab42389409851d45972df3b0, type: 3}
+  - {fileID: 21300000, guid: 5d6fbec7a7c760b4c802acdc962344b6, type: 3}
+  hoverSprites:
+  - {fileID: 21300000, guid: 7576f9a1c465dcf4aa89c5165bf77b1d, type: 3}
+  - {fileID: 21300000, guid: b676c0fc801d9e940a94cc55aa6a0335, type: 3}
+  - {fileID: 21300000, guid: 547e654876cf1ec49b5b4bea375abd02, type: 3}
   possibleFoodPrefabs:
   - {fileID: 3750726733545085875, guid: f31d20c7fbc8c644299095658871f322, type: 3}
   - {fileID: 5646693972992173570, guid: 87ad32abfd21cc746b618045f6c014b1, type: 3}

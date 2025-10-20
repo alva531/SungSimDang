@@ -9,6 +9,10 @@ public class CustomerSpawner : MonoBehaviour
     public float initialDelay = 1f;
     public float spawnInterval = 4f;
 
+    [Header("Sprites por spawn")]
+    public Sprite[] normalSprites;  // uno por spawnPoint
+    public Sprite[] hoverSprites;   // uno por spawnPoint
+
     [Header("Orders")]
     public GameObject[] possibleFoodPrefabs;
     [Range(0f,1f)] public float probOne = 0.6f;
@@ -46,6 +50,12 @@ public class CustomerSpawner : MonoBehaviour
         var order = go.GetComponent<CustomerOrder>();
         if (order == null) { Destroy(go); return; }
 
+        // 🔸 Configuramos sprites de DropZone según el spawn
+        Sprite nSprite = (normalSprites != null && freeIndex < normalSprites.Length) ? normalSprites[freeIndex] : null;
+        Sprite hSprite = (hoverSprites != null && freeIndex < hoverSprites.Length) ? hoverSprites[freeIndex] : null;
+        order.ConfigureAppearance(freeIndex, nSprite, hSprite);
+
+        // 🔸 Generamos pedido
         var pedido = GenerateOrderPrefabs();
         order.SetOrder(pedido);
 
@@ -59,7 +69,6 @@ public class CustomerSpawner : MonoBehaviour
         return -1;
     }
 
-    // --- Aquí randomizamos el estado pedido para cada item ---
     private List<(GameObject, FoodState)> GenerateOrderPrefabs()
     {
         var list = new List<(GameObject, FoodState)>();
@@ -75,12 +84,8 @@ public class CustomerSpawner : MonoBehaviour
         return list;
     }
 
-    // Modifica probabilidades aquí según quieras que pidan más Cooked, etc.
     private FoodState GetRandomRequestedState()
     {
-        float r = Random.value;
-        // ejemplo: SemiCooked 40%, Cooked 60%
-        //if (r < 0.25f) return FoodState.SemiCooked;
         return FoodState.Cooked;
     }
 
