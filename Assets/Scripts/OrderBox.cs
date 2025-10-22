@@ -7,6 +7,13 @@ public class OrderBox : MonoBehaviour
     public List<FoodItem> collectedItems = new List<FoodItem>();
     public int maxItems = 3;
 
+    public GameObject tutorial;
+
+    void Start()
+    {
+        
+    }
+
     void Update()
     {
         if (collectedItems.Count >= 3)
@@ -23,7 +30,12 @@ public class OrderBox : MonoBehaviour
     {
         if (food == null) return;
 
-        // Si la caja está llena, no aceptar más
+        if (tutorial.activeSelf)
+        {
+            tutorial.SetActive(false);
+            GameObject.FindGameObjectWithTag("Tuto").gameObject.SetActive(false);
+        }
+
         if (collectedItems.Count >= maxItems)
         {
             Debug.Log($"🚫 Caja llena: no se puede agregar {food.foodName}");

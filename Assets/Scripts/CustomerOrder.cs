@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,10 +6,11 @@ public class CustomerOrder : MonoBehaviour
 {
     [Header("UI")]
     public OrderBubble bubble;
-    public DropZone dropZone; // Referencia a su zona de entrega
+    public DropZone dropZone;
 
-    // Guardamos nombre + estado requerido
     private List<(string foodName, FoodState requiredState)> requestedItems = new List<(string, FoodState)>();
+
+    public event Action<CustomerOrder> onOrderCompleted;
 
     public void SetOrder(List<(GameObject prefab, FoodState state)> foodRequests)
     {
@@ -32,7 +34,6 @@ public class CustomerOrder : MonoBehaviour
         bubble?.ShowOrderWithStates(foodRequests);
     }
 
-    // 🟠 Nuevo método: Configura el aspecto de su DropZone según el spawnPoint
     public void ConfigureAppearance(int spawnIndex, Sprite normalSprite, Sprite hoverSprite)
     {
         if (dropZone == null)
@@ -42,16 +43,10 @@ public class CustomerOrder : MonoBehaviour
         {
             dropZone.normalSprite = normalSprite;
             dropZone.hoverSprite = hoverSprite;
-
             if (dropZone.targetImage != null)
                 dropZone.targetImage.sprite = normalSprite;
         }
-
-        // (opcional) podés guardar el índice si lo necesitás para lógica futura
-        _spawnIndex = spawnIndex;
     }
-
-    private int _spawnIndex; // Guarda en qué spawn apareció (si te sirve más adelante)
 
     public bool ValidateOrder(List<FoodItem> deliveredItems)
     {
@@ -82,6 +77,10 @@ public class CustomerOrder : MonoBehaviour
     {
         bubble?.Clear();
         Debug.Log($"🧑‍🍳 Cliente satisfecho: {gameObject.name}");
+
+        // 🔸 Notificar al spawner
+        onOrderCompleted?.Invoke(this);
+
         Destroy(gameObject, 0.1f);
     }
 }

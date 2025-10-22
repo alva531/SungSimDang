@@ -279,6 +279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collectedItems: []
   maxItems: 3
+  tutorial: {fileID: 0}
 --- !u!114 &1725677932527888287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -296,6 +297,7 @@ MonoBehaviour:
   linkedCustomer: {fileID: 0}
   linkedFryer: {fileID: 0}
   boxSpawner: {fileID: 0}
+  targetImage: {fileID: 0}
   normalSprite: {fileID: 21300000, guid: 305b60523f551474d8ee653eacd29c72, type: 3}
   hoverSprite: {fileID: 21300000, guid: 80c1504463d2f974d96a52e190805f67, type: 3}
 --- !u!225 &1196667634643394059

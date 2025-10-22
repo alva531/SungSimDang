@@ -23,6 +23,19 @@ public class Fryer : MonoBehaviour
 
     private GameObject _reloj;
 
+    [Header("Tutorial")]
+    public bool tuto;
+
+    public GameObject tutorial1;
+
+    public bool tuto2;
+
+    public GameObject tutorial2;
+
+    public GameObject CustomerSpawner;
+
+    public GameObject OtherFryer;
+
     public void PlaceItem(FoodItem item)
     {
         if (cooking || item == null) return;
@@ -59,6 +72,15 @@ public class Fryer : MonoBehaviour
                 yield return WaitAndCheck(cookTime);
                 if (currentFood != null)
                     currentFood.Cook();
+                    if (tuto == true)
+                    {
+                        tuto = false;
+                        tutorial1.SetActive(false);
+                        OtherFryer.GetComponent<Fryer>().tuto = false;
+                        OtherFryer.GetComponent<Fryer>().tuto2 = false;
+                        tuto2 = true;
+                        CustomerSpawner.SetActive(true);
+                    }
                 goto case FoodState.Cooked;
 
             //case FoodState.SemiCooked:
@@ -97,6 +119,12 @@ public class Fryer : MonoBehaviour
 
         Debug.Log($"⏸ {currentFood.foodName} -> INTERRUPTED en estado {currentFood.currentState}");
 
+        if (tuto2 == true && currentFood.currentState == FoodState.Cooked)
+        {
+            tuto2 = false;
+            StartCoroutine(Tutorial2());
+        }
+
         if (cookRoutine != null)
         {
             StopCoroutine(cookRoutine);
@@ -112,5 +140,18 @@ public class Fryer : MonoBehaviour
             draggable.SetFryer(null);
 
         currentFood = null;
+    }
+
+    private IEnumerator Tutorial2()
+    {
+        yield return new WaitForSeconds(0.5f);
+            OrderBox orderBox = FindAnyObjectByType<OrderBox>();
+        if (orderBox != null && orderBox.collectedItems.Count > 0)
+        {
+            Debug.Log("🟡 Tutorial2 cancelado: la caja ya tiene objetos.");
+            yield break; // Cancela el tutorial
+        }
+
+        tutorial2.SetActive(true);
     }
 }
